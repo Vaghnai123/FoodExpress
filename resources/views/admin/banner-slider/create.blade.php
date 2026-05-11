@@ -1,0 +1,115 @@
+@extends('admin.layouts.master')
+
+@push('styles')
+    <style>
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            background-size: cover !important;
+            background-position: center !important;
+            border: 1px solid #e4e6fc;
+        }
+
+        .camera-icon {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .image-preview:hover .camera-icon {
+            opacity: 1;
+        }
+
+        #image-upload {
+            display: none;
+        }
+    </style>
+@endpush
+
+@section('content')
+    <section class="section">
+        <div class="section-header shadow-sm"
+            style="background-color: #fff; padding: 20px 25px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="margin: 0; font-size: 18px; color: #34395e;">
+                <i class="fas fa-layer-group" style="color: #6777ef; margin-right: 10px;"></i> Banner Slider
+            </h1>
+        </div>
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h4>Create Banner Slider</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.banner-slider.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="form-group">
+                        <label>Image</label>
+                        <div id="image-preview" class="image-preview">
+                            <div class="camera-icon" onclick="$('#image-upload').click()">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <input type="file" name="image" id="image-upload">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Title</label>
+                        <input type="text" class="form-control" name="title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Sub Title</label>
+                        <input type="text" class="form-control" name="sub_title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Url</label>
+                        <input type="text" class="form-control" name="url">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status" class="form-control" id="">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            let defaultImage = "{{ asset('default-avatar.jpg') }}";
+            $('.image-preview').css('background-image', 'url(' + defaultImage + ')');
+
+            $('#image-upload').on('change', function() {
+                const file = this.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.image-preview').css('background-image', 'url(' + e.target.result + ')');
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+@endpush
