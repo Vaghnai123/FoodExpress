@@ -36,7 +36,7 @@ class ClearDatabaseController extends Controller
 
         $path = public_path('uploads');
         $files = [];
-        $preserveFiles = ['avatar.png', 'default-avatar.jpg', 'default.png'];
+        $preserveFiles = ['avatar.png','default.png'];
 
         if (File::exists($path)) {
             $allFiles = File::allFiles($path);

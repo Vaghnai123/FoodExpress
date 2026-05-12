@@ -32,7 +32,7 @@ trait FileUploadTrait
                 $image->move($destinationPath, $imageName);
             }
 
-            if ($oldPath && $oldPath !== '/uploads/default.png') {
+            if ($oldPath && $oldPath !== '/uploads/default-avatar.jpg') {
                 $cleanedOldPath = ltrim($oldPath, '/');
                 if (File::exists(public_path($cleanedOldPath))) {
                     File::delete(public_path($cleanedOldPath));
@@ -50,7 +50,7 @@ trait FileUploadTrait
      */
     function removeImage(string $path): void
     {
-        if ($path && $path !== '/uploads/default.png') {
+        if ($path && $path !== '/uploads/default-avatar.jpg') {
             $cleanedPath = ltrim($path, '/');
             if (File::exists(public_path($cleanedPath))) {
                 File::delete(public_path($cleanedPath));
