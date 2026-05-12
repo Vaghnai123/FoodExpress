@@ -22,6 +22,10 @@ class CustomMailServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->runningInConsole()) {
+            return;
+        }
+        
         $mailSetting = Cache::rememberForever('mail_settings', function(){
             $key = [
                 'mail_driver',
