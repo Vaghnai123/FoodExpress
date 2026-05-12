@@ -28,4 +28,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
 
-CMD php artisan migrate --force; php artisan optimize:clear; nginx; php-fpm
+# Start command - Permissions fix ke saath
+CMD php artisan optimize:clear && \
+    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
+    php artisan migrate --force && \
+    nginx && php-fpm
