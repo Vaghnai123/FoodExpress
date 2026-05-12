@@ -3,54 +3,57 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 
 trait FileUploadTrait
 {
-    function uploadImage(Request $request, $inputName, $oldPath = NULL, $path = "uploads", $width = null, $height = null)
+    function uploadImage(Request $request, $inputName, $oldPath = NULL, $path = "/uploads", $width = null, $height = null)
     {
         if ($request->hasFile($inputName)) {
 
-            if ($oldPath && $oldPath !== '/uploads/default.png') {
-                $this->removeImage($oldPath);
+            $image = $request->{$inputName};
+            $ext = $image->getClientOriginalExtension();
+            $imageName = 'media_' . uniqid() . '.' . $ext;
+
+            $destinationPath = public_path($path);
+
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
             }
-
-            $file = $request->file($inputName);
-
-            $options = [
-                'folder' => trim($path, '/')
-            ];
 
             if (!is_null($width) && !is_null($height)) {
-                $options['transformation'] = [
-                    'width' => $width,
-                    'height' => $height,
-                    'crop' => 'fill'
-                ];
+                $manager = ImageManager::usingDriver(GdDriver::class);
+                $img = $manager->decode($image);
+                $img->resize($width, $height);
+                $img->save($destinationPath . '/' . $imageName);
+            } else {
+                $image->move($destinationPath, $imageName);
             }
 
-            $uploadedFileUrl = Cloudinary::upload($file->getRealPath(), $options)->getSecurePath();
+            if ($oldPath && $oldPath !== '/uploads/default.png') {
+                $cleanedOldPath = ltrim($oldPath, '/');
+                if (File::exists(public_path($cleanedOldPath))) {
+                    File::delete(public_path($cleanedOldPath));
+                }
+            }
 
-            return $uploadedFileUrl;
+            return $path . '/' . $imageName;
         }
 
         return NULL;
     }
 
     /**
-     * Remove file from Cloudinary
+     * Remove file
      */
     function removeImage(string $path): void
     {
-        if ($path && str_contains($path, 'cloudinary.com')) {
-            $parts = explode('/upload/', $path);
-            if (isset($parts[1])) {
-                $fileAndPath = preg_replace('/^v\d+\//', '', $parts[1]);
-                $publicId = pathinfo($fileAndPath, PATHINFO_DIRNAME) . '/' . pathinfo($fileAndPath, PATHINFO_FILENAME);
-
-                if (trim($publicId, './') !== '') {
-                    Cloudinary::destroy(trim($publicId, './'));
-                }
+        if ($path && $path !== '/uploads/default.png') {
+            $cleanedPath = ltrim($path, '/');
+            if (File::exists(public_path($cleanedPath))) {
+                File::delete(public_path($cleanedPath));
             }
         }
     }
