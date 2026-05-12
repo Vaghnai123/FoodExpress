@@ -25,16 +25,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
-
         Paginator::useBootstrap();
 
-        $keys = ['pusher_app_id', 'pusher_cluster', 'pusher_key', 'pusher_secret'];
-        $pusherConf = Setting::whereIn('key', $keys)->pluck('value', 'key');
+        try {
+            if (Schema::hasTable('settings')) {
+                $keys = ['pusher_app_id', 'pusher_cluster', 'pusher_key', 'pusher_secret'];
+                $pusherConf = Setting::whereIn('key', $keys)->pluck('value', 'key');
 
-        config(['broadcasting.connections.pusher.key' => $pusherConf['pusher_key']]);
-        config(['broadcasting.connections.pusher.secret' => $pusherConf['pusher_secret']]);
-        config(['broadcasting.connections.pusher.app_id' => $pusherConf['pusher_app_id']]);
-        config(['broadcasting.connections.pusher.options.cluster' => $pusherConf['pusher_cluster']]);
+                if(isset($pusherConf['pusher_key'])) {
+                    config(['broadcasting.connections.pusher.key' => $pusherConf['pusher_key']]);
+                    config(['broadcasting.connections.pusher.secret' => $pusherConf['pusher_secret']]);
+                    config(['broadcasting.connections.pusher.app_id' => $pusherConf['pusher_app_id']]);
+                    config(['broadcasting.connections.pusher.options.cluster' => $pusherConf['pusher_cluster']]);
+                }
+            }
+        } catch (\Exception $e) {
+        }
 
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
