@@ -1,10 +1,10 @@
 FROM php:8.4-fpm
 
-# Install system dependencies (yahan libzip-dev add kiya hai)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev zip unzip nginx libzip-dev
 
-# Install PHP extensions (yahan aakhiri mein zip add kiya hai)
+# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Get latest Composer
@@ -16,9 +16,9 @@ WORKDIR /var/www
 # Copy project files
 COPY . .
 
-# Install dependencies (RAM limit hata di hai aur strict check band kar diya hai)
+# Install dependencies (Yahan --no-scripts laga diya hai taaki build ke time DB na dhoondhe)
 ENV COMPOSER_MEMORY_LIMIT=-1
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
@@ -28,4 +28,5 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
 
-CMD service nginx start && php-fpm
+# Start command (Script ko ab runtime par chalayenge jab DB connect ho chuka hoga)
+CMD php artisan package:discover && service nginx start && php-fpm
