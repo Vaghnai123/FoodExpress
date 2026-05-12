@@ -37,7 +37,8 @@ RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/public/uploa
 EXPOSE 80
 
 # 10. Start command (Permissions fix + DB Migrate + Start Server)
-CMD chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads && \
+CMD php artisan optimize:clear && \
+    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads && \
     php artisan migrate --force && \
-    php artisan optimize && \
-    service nginx start && php-fpm
+    nginx && php-fpm
+
