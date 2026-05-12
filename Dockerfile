@@ -1,42 +1,41 @@
 FROM php:8.4-fpm
 
-# Install system dependencies
+# 1. Install system dependencies AUR Node.js (Vite assets ke liye)
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip nginx libzip-dev
-
-# Install Node.js & NPM (NAYI LINE)
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip nginx libzip-dev && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
-# Install PHP extensions
+# 2. Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Get latest Composer
+# 3. Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# 4. Set working directory
 WORKDIR /var/www
 
-# Copy project files
+# 5. Copy project files
 COPY . .
 
-# Install dependencies
+# 6. Install PHP dependencies
 ENV COMPOSER_MEMORY_LIMIT=-1
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
 
-# Install Node modules and Build Frontend Assets (NAYI LINE)
+# 7. Install Node modules & Build Frontend Assets (YE VITE KA ERROR SOLVE KAREGA)
 RUN npm install
 RUN npm run build
 
-# Copy nginx configuration
+# 8. Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
 
-# Permissions
+# 9. Initial Permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
 
-# Start command - Permissions fix ke saath
+# 10. Start command (Permissions fix + DB Migrate + Start Server)
 CMD php artisan optimize:clear && \
     chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
     php artisan migrate --force && \
