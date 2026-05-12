@@ -20,9 +20,13 @@ WORKDIR /var/www
 # Copy project files
 COPY . .
 
-# Install dependencies (Yahan --no-scripts laga diya hai taaki build ke time DB na dhoondhe)
+# Install dependencies
 ENV COMPOSER_MEMORY_LIMIT=-1
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts
+
+# Install Node modules and Build Frontend Assets (NAYI LINE)
+RUN npm install
+RUN npm run build
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
