@@ -60,7 +60,7 @@
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image"
-                    src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('default-avatar.jpg') }}"
+                    src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('uploads/default-avatar.jpg') }}"
                     class="rounded-circle mr-1">
                 <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
             </a>
