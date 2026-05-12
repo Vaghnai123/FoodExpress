@@ -105,7 +105,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            let defaultImage = "{{ asset('default-avatar.jpg') }}";
+            let defaultImage = "{{ asset('uploads/default-avatar.jpg') }}";
             $('.image-preview').css('background-image', 'url(' + defaultImage + ')');
 
             $('#image-upload').on('change', function() {
@@ -114,7 +114,6 @@
 
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Jab nayi photo select hogi, to wo default ko replace kar degi
                     $('.image-preview').css('background-image', 'url(' + e.target.result + ')');
                 };
                 reader.readAsDataURL(file);

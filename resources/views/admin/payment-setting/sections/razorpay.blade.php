@@ -89,9 +89,9 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        var defaultImage = "{{ asset('default-avatar.jpg') }}";
+        var defaultImage = "{{ asset('uploads/default-avatar.jpg') }}";
         var razorpayLogo = "{{ @$paymentGateway['razorpay_logo'] }}";
-        
+
         var imageToShow = razorpayLogo ? razorpayLogo : defaultImage;
 
         $('.razorpay-preview').css({

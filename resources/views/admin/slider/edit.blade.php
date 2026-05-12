@@ -106,7 +106,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            let imageUrl = "{{ $slider->image ? asset($slider->image) : asset('default-avatar.jpg') }}";
+            let imageUrl = "{{ $slider->image ? asset($slider->image) : asset('uploads/default-avatar.jpg') }}";
 
             $('.image-preview').css('background-image', 'url(' + imageUrl + ')');
 

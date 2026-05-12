@@ -34,8 +34,8 @@
     <script>
         $(document).ready(function() {
             var userId = "{{ auth()->user()->id }}";
-            var defaultAvatar = @json(asset('frontend/images/default-avatar.jpg'));
-            var authAvatar = @json(auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('frontend/images/default-avatar.jpg'));
+            var defaultAvatar = @json(asset('uploads/default-avatar.jpg'));
+            var authAvatar = @json(auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('uploads/default-avatar.jpg'));
 
             function scrollToBootom() {
                 let chatContent = $('.fp__chat_body');

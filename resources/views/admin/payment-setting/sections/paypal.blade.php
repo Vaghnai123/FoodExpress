@@ -108,9 +108,9 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        var defaultImage = "{{ asset('default-avatar.jpg') }}";
+        var defaultImage = "{{ asset('uploads/default-avatar.jpg') }}";
         var paypalLogo = "{{ @$paymentGateway['paypal_logo'] }}";
-        
+
         var imageToShow = paypalLogo ? paypalLogo : defaultImage;
 
         $('.paypal-preview').css({

@@ -89,7 +89,7 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        var defaultImage = "{{ asset('default-avatar.jpg') }}";
+        var defaultImage = "{{ asset('uploads/default-avatar.jpg') }}";
         var stripeLogo = "{{ @$paymentGateway['stripe_logo'] }}";
 
         var imageToShow = stripeLogo ? stripeLogo : defaultImage;

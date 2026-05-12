@@ -9,7 +9,7 @@
                 @forelse ($reviews as $review)
                     <div class="fp__single_comment border-0 {{ !$loop->last ? 'pb-4 mb-4' : 'm-0' }}"
                         style="{{ !$loop->last ? 'border-bottom: 1px solid #d1d5db !important;' : '' }}">
-                        <img src="{{ !empty($review->user->avatar) ? asset($review->user->avatar) : asset('default-avatar.jpg') }}"
+                        <img src="{{ !empty($review->user->avatar) ? asset($review->user->avatar) : asset('uploads/default-avatar.jpg') }}"
                             alt="review" class="img-fluid">
                         <div class="fp__single_comm_text">
                             <h3><a href="javascript:;">{{ $review->user->name }}</a>

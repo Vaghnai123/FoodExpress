@@ -23,7 +23,7 @@
                         <div class="fp__dashboard_menu">
                             <div class="dasboard_header">
                                 <div class="dasboard_header_img">
-                                    <img src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('frontend/images/default-avatar.jpg') }}"
+                                    <img src="{{ auth()->user()->avatar ? asset(auth()->user()->avatar) : asset('uploads/default-avatar.jpg') }}"
                                         alt="user" class="img-fluid w-100">
                                     <label for="upload"><i class="far fa-camera"></i></label>
                                     <form id="avatar_form">

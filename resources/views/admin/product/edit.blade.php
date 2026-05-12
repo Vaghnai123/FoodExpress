@@ -165,7 +165,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            let imageUrl = "{{ $product->thumb_image ? asset($product->thumb_image) : asset('default-avatar.jpg') }}";
+            let imageUrl = "{{ $product->thumb_image ? asset($product->thumb_image) : asset('uploads/default-avatar.jpg') }}";
 
             $('.image-preview').css('background-image', 'url(' + imageUrl + ')');
 
