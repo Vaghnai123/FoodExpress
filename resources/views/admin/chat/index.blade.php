@@ -20,14 +20,15 @@
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
                                 @foreach ($senders as $sender)
-                                    @php
+                                   @php
                                         $chatUser = \App\Models\User::find($sender->sender_id);
-                                        $unseenMessages = \App\Models\Chat::where([
-                                            'sender_id' => $chatUser->id,
-                                            'receiver_id' => auth()->user()->id,
-                                            'seen' => 0,
-                                        ])->count();
 
+                                        $adminIds = \App\Models\User::where('role', 'admin')->pluck('id')->toArray();
+
+                                        $unseenMessages = \App\Models\Chat::where('sender_id', $chatUser->id)
+                                            ->whereIn('receiver_id', $adminIds)
+                                            ->where('seen', 0)
+                                            ->count();
                                     @endphp
                                     <li class="media fp_chat_user" data-name="{{ $chatUser->name }}"
                                         data-user="{{ $chatUser->id }}" style="cursor: pointer">
