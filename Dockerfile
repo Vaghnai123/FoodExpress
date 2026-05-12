@@ -17,7 +17,8 @@ WORKDIR /var/www
 COPY . .
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader
+ENV COMPOSER_MEMORY_LIMIT=-1
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
