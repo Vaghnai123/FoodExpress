@@ -28,5 +28,4 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
 
-# Start command (Script ko ab runtime par chalayenge jab DB connect ho chuka hoga)
-CMD php artisan migrate --force; php artisan db:seed --force; php artisan optimize:clear; service nginx start && php-fpm
+CMD php artisan migrate --force; php artisan optimize:clear; nginx; php-fpm
