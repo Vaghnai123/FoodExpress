@@ -7,7 +7,8 @@
     <ul class="navbar-nav navbar-right">
         @php
             $notifications = \App\Models\OrderPlacedNotification::where('seen', 0)->latest()->take(10)->get();
-            $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+            $adminIds = \App\Models\User::where('role', 'admin')->pluck('id')->toArray();
+            $unseenMessages = \App\Models\Chat::whereIn('receiver_id', $adminIds)->where('seen', 0)->count();
         @endphp
 
         <li class="dropdown dropdown-list-toggle">
