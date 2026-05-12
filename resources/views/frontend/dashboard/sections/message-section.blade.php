@@ -1,3 +1,8 @@
+@php
+    $mainAdmin = \App\Models\User::where('role', 'admin')->orderBy('id', 'asc')->first();
+    $adminId = $mainAdmin ? $mainAdmin->id : 0;
+@endphp
+
 <div class="tab-pane fade" id="v-pills-message" role="tabpanel" aria-labelledby="v-pills-message-tab">
     <div class="fp_dashboard_body fp__change_password">
         <div class="fp__message">
@@ -16,6 +21,7 @@
                     <input type="text" placeholder="Type a message..." name="message" class="fp_send_message">
                     <input type="hidden" name="receiver_id" value="1">
 
+                    <input type="hidden" name="receiver_id" value="{{ $adminId }}">
                     <button class="fp__massage_btn" type="submit"><i class="fas fa-paper-plane"
                             aria-hidden="true"></i></button>
                 </form>
@@ -38,7 +44,7 @@
 
             // fetch conversations
             $('.fp_chat_message').on('click', function() {
-                let senderId = 1;
+                let senderId = {{ $adminId }};
 
                 $.ajax({
                     method: 'GET',

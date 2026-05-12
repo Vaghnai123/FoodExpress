@@ -57,7 +57,7 @@ class ChatController extends Controller
 
         $chat = new Chat();
         $chat->sender_id = auth()->user()->id;
-        $chat->receiver_id = $request->receiver_id; 
+        $chat->receiver_id = $request->receiver_id;
         $chat->message = $request->message;
         $chat->save();
 

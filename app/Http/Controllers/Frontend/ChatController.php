@@ -15,18 +15,20 @@ class ChatController extends Controller
     {
         $request->validate([
             'message' => ['required', 'max:1000'],
-            'receiver_id' => ['required', 'integer']
         ]);
+
+        $admin = User::where('role', 'admin')->orderBy('id', 'asc')->first();
 
         $chat = new Chat();
         $chat->sender_id = auth()->user()->id;
-        $chat->receiver_id = 1; 
+        $chat->receiver_id = $admin->id;
         $chat->message = $request->message;
         $chat->save();
 
         $userAvatar = auth()->user()->avatar;
         $avatar = $userAvatar ? asset($userAvatar) : asset('frontend/images/default-avatar.jpg');
         $senderId = auth()->user()->id;
+
         $adminIds = User::where('role', 'admin')->pluck('id');
         foreach($adminIds as $adminId) {
             broadcast(new ChatEvent($request->message, $avatar, $adminId, $senderId))->toOthers();
