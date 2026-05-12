@@ -56,8 +56,8 @@ class ChatController extends Controller
         ]);
 
         $chat = new Chat();
-        $chat->sender_id = auth()->user()->id; // Reply karne wale Admin ki ID
-        $chat->receiver_id = $request->receiver_id; // Client ki ID
+        $chat->sender_id = auth()->user()->id;
+        $chat->receiver_id = $request->receiver_id; 
         $chat->message = $request->message;
         $chat->save();
 
