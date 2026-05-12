@@ -30,14 +30,14 @@ RUN npm run build
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # 9. Initial Permissions
-RUN mkdir -p /var/www/public/uploads /var/www/public/admin/assets/img /var/www/public/frontend/assets/images
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads /var/www/public/admin/assets/img /var/www/public/frontend/assets/images
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads /var/www/public/admin/assets/img /var/www/public/frontend/assets/images
+RUN mkdir -p /var/www/public/uploads
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads
 
 EXPOSE 80
 
 # 10. Start command (Permissions fix + DB Migrate + Start Server)
 CMD php artisan optimize:clear && \
-    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads /var/www/public/admin/assets/img /var/www/public/frontend/assets/images && \
+    chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads && \
     php artisan migrate --force && \
     nginx && php-fpm
