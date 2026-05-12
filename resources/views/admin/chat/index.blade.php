@@ -20,7 +20,7 @@
                         <div class="card-body">
                             <ul class="list-unstyled list-unstyled-border">
                                 @foreach ($senders as $sender)
-                                    @php
+                                   @php
                                         $chatUser = \App\Models\User::find($sender->sender_id);
 
                                         $adminIds = \App\Models\User::where('role', 'admin')->pluck('id')->toArray();
