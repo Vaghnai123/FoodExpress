@@ -3,71 +3,57 @@
 namespace App\Traits;
 
 use Illuminate\Http\Request;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
 
 trait FileUploadTrait
 {
-    /**
-     * Handle Image Upload to Cloudinary
-     */
-    function uploadImage(Request $request, $inputName, $oldPath = NULL, $path = "upload", $width = null, $height = null)
+    function uploadImage(Request $request, $inputName, $oldPath = NULL, $path = "/uploads", $width = null, $height = null)
     {
         if ($request->hasFile($inputName)) {
 
-            // 1. Purani image agar Cloudinary par hai toh use delete karein
-            if ($oldPath && str_contains($oldPath, 'cloudinary.com')) {
-                $this->removeImage($oldPath);
+            $image = $request->{$inputName};
+            $ext = $image->getClientOriginalExtension();
+            $imageName = 'media_' . uniqid() . '.' . $ext;
+
+            $destinationPath = public_path($path);
+
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
             }
 
-            $file = $request->file($inputName);
-
-            // 2. Cloudinary options (Folder name setup)
-            $options = [
-                'folder' => trim($path, '/') // Default ab "upload" folder jayega
-            ];
-
-            // 3. Resizing logic (Cloudinary Transformations)
-            // Agar aap controller se width/height bhejenge, toh Cloudinary auto-resize karega
             if (!is_null($width) && !is_null($height)) {
-                $options['transformation'] = [
-                    'width' => $width,
-                    'height' => $height,
-                    'crop' => 'fill', // Image ko properly fit karega
-                    'gravity' => 'auto' // Face ya main object par focus rakhega
-                ];
+                $manager = ImageManager::usingDriver(GdDriver::class);
+                $img = $manager->decode($image);
+                $img->resize($width, $height);
+                $img->save($destinationPath . '/' . $imageName);
+            } else {
+                $image->move($destinationPath, $imageName);
             }
 
-            // 4. Upload and get Secure URL (https://...)
-            $uploadedFileUrl = Cloudinary::upload($file->getRealPath(), $options)->getSecurePath();
+            if ($oldPath && $oldPath !== '/uploads/default.png') {
+                $cleanedOldPath = ltrim($oldPath, '/');
+                if (File::exists(public_path($cleanedOldPath))) {
+                    File::delete(public_path($cleanedOldPath));
+                }
+            }
 
-            return $uploadedFileUrl;
+            return $path . '/' . $imageName;
         }
 
         return NULL;
     }
 
     /**
-     * Remove file from Cloudinary using URL
+     * Remove file
      */
     function removeImage(string $path): void
     {
-        if ($path && str_contains($path, 'cloudinary.com')) {
-            try {
-                // URL se Public ID nikalne ka logic
-                $parts = explode('/upload/', $path);
-                if (isset($parts[1])) {
-                    // Version number (v12345...) ko hatana
-                    $fileAndPath = preg_replace('/^v\d+\//', '', $parts[1]);
-                    
-                    // Folder + Filename nikalna (Public ID)
-                    $publicId = pathinfo($fileAndPath, PATHINFO_DIRNAME) . '/' . pathinfo($fileAndPath, PATHINFO_FILENAME);
-
-                    // Cloudinary se delete karna
-                    Cloudinary::destroy(trim($publicId, './'));
-                }
-            } catch (\Exception $e) {
-                // Logger mein error daal sakte hain agar delete fail ho
-                \Log::error("Cloudinary delete failed: " . $e->getMessage());
+        if ($path && $path !== '/uploads/default.png') {
+            $cleanedPath = ltrim($path, '/');
+            if (File::exists(public_path($cleanedPath))) {
+                File::delete(public_path($cleanedPath));
             }
         }
     }
