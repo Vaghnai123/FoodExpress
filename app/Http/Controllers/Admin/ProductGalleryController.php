@@ -34,7 +34,7 @@ class ProductGalleryController extends Controller
             'product_id' => ['required', 'integer']
         ]);
 
-        $imagePath = $this->uploadImage($request, 'image');
+        $imagePath = $this->uploadImage($request, 'image', null, '/uploads', 300, 220);
 
         $gallery = new ProductGallery();
         $gallery->product_id = $request->product_id;
