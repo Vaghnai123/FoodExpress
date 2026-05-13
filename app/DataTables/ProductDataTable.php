@@ -31,7 +31,7 @@ class ProductDataTable extends DataTable
                 }
                 $more = '
                 <div class="dropdown d-inline">
-                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-boundary="window">
                         <i class="fas fa-cog"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -92,7 +92,6 @@ class ProductDataTable extends DataTable
             ->minifiedAjax()
             ->orderBy(0)
             ->parameters([
-                'scrollX' => true,
                 'responsive' => true,
             ])
             ->selectStyleSingle()
