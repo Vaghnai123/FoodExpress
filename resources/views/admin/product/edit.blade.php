@@ -38,19 +38,6 @@
         #image-label::before {
             display: none !important;
         }
-
-        /* Select2 Vertical Alignment Fix */
-        .select2-container .select2-selection--single {
-            height: 42px !important;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            line-height: 42px !important;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__arrow {
-            height: 42px !important;
-        }
     </style>
 @endpush
 
@@ -90,7 +77,7 @@
 
                     <div class="form-group">
                         <label>Category</label>
-                        <select name="category" class="form-control select2" id="">
+                        <select name="category" class="form-control" id="">
                             <option value="">select</option>
                             @foreach ($categories as $category)
                                 <option @selected($product->category_id === $category->id) value="{{ $category->id }}">{{ $category->name }}
