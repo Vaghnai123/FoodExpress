@@ -23,9 +23,12 @@ class CategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
+                if (auth()->user()->can('edit categories')) {
                 $edit = "<a href='" . route('admin.category.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-pen'></i></a>";
+                }
+                if (auth()->user()->can('delete categories')) {
                 $delete = "<a href='" . route('admin.category.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash-alt'></i></a>";
-
+                }
                 return $edit . $delete;
             })
             ->addColumn('show_at_home', function ($query) {

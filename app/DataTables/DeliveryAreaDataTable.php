@@ -23,9 +23,12 @@ class DeliveryAreaDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
+                if (auth()->user()->can('edit delivery areas')) {
                 $edit = "<a href='" . route('admin.delivery-area.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-pen'></i></a>";
+                }
+                if (auth()->user()->can('delete delivery areas')) {
                 $delete = "<a href='" . route('admin.delivery-area.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash-alt'></i></a>";
-
+                }
                 return $edit . $delete;
             })
             ->addColumn('delivery_fee', function ($query) {

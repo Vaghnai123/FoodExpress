@@ -13,9 +13,11 @@
             <div class="card-header">
                 <h4>All Delivery Areas</h4>
                 <div class="card-header-action">
+                    @can('create delivery areas')
                     <a href="{{ route('admin.delivery-area.create') }}" class="btn btn-primary">
                         Create new
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

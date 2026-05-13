@@ -12,22 +12,25 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'dashboard' => ['view dashboard'], 
+            'dashboard' => ['view dashboard'],
+            'sliders' => ['manage sliders'],
+            'daily_offers' => ['manage daily offers'],
             'products' => ['view products', 'create products', 'edit products', 'delete products'],
             'categories' => ['view categories', 'create categories', 'edit categories', 'delete categories'],
-            'orders' => ['view orders', 'update orders', 'delete orders'],
+            'orders' => ['view orders'],
+            'ecommerce' => ['manage ecommerce'],
+            'delivery_areas' => ['view delivery areas', 'create delivery areas', 'edit delivery areas', 'delete delivery areas'],
             'coupons' => ['view coupons', 'create coupons', 'edit coupons', 'delete coupons'],
+            'payment_settings' => ['view payment settings'],
+            'reservations' => ['view reservations'],
+            'chat' => ['access chat'],
             'blogs' => ['view blogs', 'create blogs', 'edit blogs', 'delete blogs'],
-            'reservations' => ['view reservations', 'manage reservations'],
             'settings' => ['manage settings'],
             'admin_management' => ['view admins', 'create admins', 'edit admins', 'delete admins'],
             'roles' => ['view roles', 'create roles', 'edit roles', 'delete roles'],
-            'chat' => ['access chat'],
-            'sliders' => ['manage sliders'],
-            'daily_offers' => ['manage daily offers'],
-            'ecommerce' => ['manage ecommerce'],
             'sections' => ['manage sections'],
             'pages' => ['manage pages'],
+            'permissions' => ['manage permissions'],
         ];
 
         foreach ($permissions as $group => $perms) {
@@ -43,7 +46,11 @@ class RolePermissionSeeder extends Seeder
         $editorRole = Role::firstOrCreate(['name' => 'Editor']);
 
         $adminRole->givePermissionTo([
-            'view dashboard', 'view products', 'view categories', 'view orders', 'manage settings'
+            'view dashboard',
+            'view products',
+            'view categories',
+            'view orders',
+            'manage settings'
         ]);
 
         $superAdmin = User::firstOrCreate([

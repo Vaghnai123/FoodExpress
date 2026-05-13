@@ -48,9 +48,11 @@
             <div class="card-header">
                 <h4>All Blogs</h4>
                 <div class="card-header-action">
+                    @can('create blogs')
                     <a href="{{ route('admin.blogs.create') }}" class="btn btn-primary">
                         Create new
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

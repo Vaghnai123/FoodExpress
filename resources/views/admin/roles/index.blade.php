@@ -9,8 +9,12 @@
         <div class="card card-primary">
             <div class="card-header">
                 <h4>All Roles</h4>
-                <div class="card-header-action"><a href="{{ route('admin.roles.create') }}" class="btn btn-primary">Create
-                        New</a></div>
+                <div class="card-header-action">
+                    @can('create roles')
+                        <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">Create
+                            New</a>
+                    @endcan
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">{{ $dataTable->table() }}</div>

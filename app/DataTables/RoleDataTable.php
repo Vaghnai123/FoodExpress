@@ -15,8 +15,12 @@ class RoleDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
                 if ($query->name !== 'Super Admin') {
+                    if (auth()->user()->can('edit roles')) {
                     $edit = "<a href='" . route('admin.roles.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-pen'></i></a>";
+                    }
+                    if (auth()->user()->can('delete roles')) {
                     $delete = "<a href='" . route('admin.roles.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash-alt'></i></a>";
+                    }
                     return $edit . $delete;
                 }
                 return '<span class="badge badge-danger">Not Editable</span>';

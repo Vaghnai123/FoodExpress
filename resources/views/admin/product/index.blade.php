@@ -15,7 +15,7 @@
                     <div class="accordion">
                         <div class="accordion-header collapsed bg-primary text-light p-3 " role="button"
                             data-toggle="collapse" data-target="#panel-body-1" aria-expanded="false">
-                            <h4>Menu Section Titles..</h4> 
+                            <h4>Menu Section Titles..</h4>
                         </div>
                         <div class="accordion-body collapse" id="panel-body-1" data-parent="#accordion">
                             <form action="{{ route('admin.product-title.update') }}" method="POST">
@@ -47,9 +47,11 @@
             <div class="card-header d-flex justify-content-between align-items-center" style="flex-wrap: nowrap; gap: 10px;">
                 <h4 class="m-0" style="white-space: nowrap;">All Products</h4>
                 <div class="card-header-action">
+                    @can('create products')
                     <a href="{{ route('admin.product.create') }}" class="btn btn-primary btn-sm shadow-sm" style="white-space: nowrap;">
                         <i class="fas fa-plus"></i> Create new
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

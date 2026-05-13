@@ -23,9 +23,12 @@ class BlogDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
+                if (auth()->user()->can('edit blogs')) {
                 $edit = "<a href='" . route('admin.blogs.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-pen'></i></a>";
+                }
+                if (auth()->user()->can('delete blogs')) {
                 $delete = "<a href='" . route('admin.blogs.destroy', $query->id) . "' class='btn btn-danger delete-item ml-2'><i class='fas fa-trash-alt'></i></a>";
-
+                }
                 return $edit . $delete;
             })
             ->addColumn('image', function ($query) {

@@ -96,9 +96,13 @@
         </div>
 
         <ul class="sidebar-menu">
+
+            @can('view dashboard')
             <li class="menu-header">Dashboard</li>
             <li class="{{ setSidebarActive(['admin.dashboard']) }}"><a class="nav-link"
                     href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i><span>Dashboard</span></a></li>
+            @endcan
+
             @can('manage sliders')
                 <li class="menu-header">Starter</li>
                 <li class="{{ setSidebarActive(['admin.slider.*']) }}"><a class="nav-link"
@@ -162,10 +166,14 @@
                             <li class="{{ setSidebarActive(['admin.coupon.*']) }}"><a class="nav-link"
                                     href="{{ route('admin.coupon.index') }}">Coupon</a></li>
                         @endcan
+                        @can('view delivery areas')
                         <li class="{{ setSidebarActive(['admin.delivery-area.*']) }}"><a class="nav-link"
                                 href="{{ route('admin.delivery-area.index') }}">Delivery Areas</a></li>
+                        @endcan
+                        @can('view payment settings')
                         <li class="{{ setSidebarActive(['admin.payment-setting.index']) }}"><a class="nav-link"
                                 href="{{ route('admin.payment-setting.index') }}">Payment Gateways</a></li>
+                        @endcan
                     </ul>
                 </li>
             @endcan

@@ -13,9 +13,11 @@
             <div class="card-header">
                 <h4>All Coupon</h4>
                 <div class="card-header-action">
+                    @can('create coupons')
                     <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary">
                         Create new
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">

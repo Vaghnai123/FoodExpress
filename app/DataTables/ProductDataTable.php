@@ -23,8 +23,12 @@ class ProductDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
+                if (auth()->user()->can('edit products')) {
                 $edit = "<a href='" . route('admin.product.edit', $query->id) . "' class='btn btn-primary'><i class='fas fa-pen'></i></a>";
+                }
+                if (auth()->user()->can('delete products')) {
                 $delete = "<a href='" . route('admin.product.destroy', $query->id) . "' class='btn btn-danger delete-item mx-2'><i class='fas fa-trash-alt'></i></a>";
+                }
                 $more = '
                 <div class="dropdown d-inline">
                     <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

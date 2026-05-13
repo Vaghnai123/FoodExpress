@@ -13,9 +13,11 @@
             <div class="card-header">
                 <h4>All Categories</h4>
                 <div class="card-header-action">
+                    @can('create categories')
                     <a href="{{ route('admin.category.create') }}" class="btn btn-primary">
                         Create new
                     </a>
+                    @endcan
                 </div>
             </div>
             <div class="card-body">
