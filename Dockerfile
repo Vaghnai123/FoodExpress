@@ -1,13 +1,13 @@
 FROM php:8.4-fpm
 
-# 1. Install system dependencies AUR Node.js 
+# 1. Install system dependencies AUR Node.js
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libxml2-dev zip unzip nginx libzip-dev && \
+    git curl libpng-dev libjpeg-dev libfreetype6-dev libwebp-dev libonig-dev libxml2-dev zip unzip nginx libzip-dev && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
-# 2. Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# 2. Install PHP extensions (GD with JPEG & WEBP support)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # 3. Get latest Composer
