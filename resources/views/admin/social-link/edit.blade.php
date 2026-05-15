@@ -2,9 +2,12 @@
 
 @section('content')
 <section class="section">
-    <div class="section-header">
-        <h1>Social Link</h1>
-    </div>
+    <div class="section-header shadow-sm"
+            style="background-color: #fff; padding: 20px 25px; border-radius: 5px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="margin: 0; font-size: 18px; color: #34395e;">
+                <i class="fas fa-link" style="color: #6777ef; margin-right: 10px;"></i> Social Links
+            </h1>
+        </div>
 
     <div class="card card-primary">
         <div class="card-header">

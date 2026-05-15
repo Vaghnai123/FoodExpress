@@ -92,7 +92,7 @@ class PaymentController extends Controller
             'currency'       => config('gatewaySettings.paypal_currency'),
             'notify_url'     => env('PAYPAL_NOTIFY_URL', ''), // Change this accordingly for your application.
             'locale'         => 'en_US', // force gateway language  i.e. it_IT, es_ES, en_US ... (for express checkout only)
-            'validate_ssl'   => false, // Validate SSL when creating api client.
+            'validate_ssl'   => true, // Validate SSL when creating api client.
         ];
 
         return $config;
