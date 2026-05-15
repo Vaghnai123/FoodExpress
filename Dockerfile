@@ -30,8 +30,9 @@ RUN npm run build
 # 8. Copy nginx configuration
 COPY nginx.conf /etc/nginx/sites-available/default
 
+
 # 9. Initial Permissions
-RUN mkdir -p /var/www/public/uploads
+RUN mkdir -p /var/www/public/uploads /var/www/storage/fonts
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache /var/www/public/uploads
 
