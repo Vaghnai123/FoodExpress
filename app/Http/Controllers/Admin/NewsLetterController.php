@@ -9,6 +9,7 @@ use App\Models\Subscriber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 use Mail;
 
 class NewsLetterController extends Controller
@@ -27,7 +28,13 @@ class NewsLetterController extends Controller
 
         $subscribers = Subscriber::pluck('email')->toArray();
 
-        Mail::to($subscribers)->send(new NewsLetter($request->subject, $request->message));
+        foreach ($subscribers as $email) {
+            try {
+                Mail::to($email)->send(new NewsLetter($request->subject, $request->message));
+            } catch (\Exception $e) {
+                Log::error("Newsletter failed for email {$email}: " . $e->getMessage());
+            }
+        }
 
         return redirect()->back()->with([
             'message' => 'News letter sent successfully!',
