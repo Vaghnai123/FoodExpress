@@ -36,7 +36,8 @@ class ContactMail extends Mailable
         return new Envelope(
             subject: $this->mailSubject,
             to: config('settings.mail_receive_address'),
-            from: $this->email,
+            from: config('settings.mail_form_address'), 
+            replyTo: $this->email,
         );
     }
 
